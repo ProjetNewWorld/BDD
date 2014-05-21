@@ -1,18 +1,44 @@
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1
+-- http://www.phpmyadmin.net
 --
--- Suppression de la base de donnée
+-- Client: localhost
+-- Généré le : Mer 21 Mai 2014 à 14:51
+-- Version du serveur: 5.5.20
+-- Version de PHP: 5.3.10
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `dblistecourses`
 --
 
-DROP DATABASE listedescourses;
+-- --------------------------------------------------------
 
 --
--- Création de la base de donnée
+-- Structure de la table `cheffamille`
 --
 
-CREATE DATABASE listedescourses;
+CREATE TABLE IF NOT EXISTS `cheffamille` (
+  `familleId` int(11) NOT NULL DEFAULT '0',
+  `membreId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`familleId`,`membreId`),
+  KEY `membreId` (`membreId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Base de données :  `listedescourses`
+-- Contenu de la table `cheffamille`
 --
+
+INSERT INTO `cheffamille` (`familleId`, `membreId`) VALUES
+(2, 4);
 
 -- --------------------------------------------------------
 
@@ -46,15 +72,28 @@ INSERT INTO `contenuliste` (`listeId`, `produitId`, `listeQte`, `dansCaddy`) VAL
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `demande`
+--
+
+CREATE TABLE IF NOT EXISTS `demande` (
+  `familleId` int(11) NOT NULL DEFAULT '0',
+  `membreId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`familleId`,`membreId`),
+  KEY `membreId` (`membreId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `famille`
 --
 
 CREATE TABLE IF NOT EXISTS `famille` (
-  `familleId` int(11) NOT NULL,
+  `familleId` int(11) NOT NULL AUTO_INCREMENT,
   `familleLibelle` varchar(25) NOT NULL,
   `familleCode` int(11) NOT NULL,
   PRIMARY KEY (`familleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `famille`
@@ -62,8 +101,7 @@ CREATE TABLE IF NOT EXISTS `famille` (
 
 INSERT INTO `famille` (`familleId`, `familleLibelle`, `familleCode`) VALUES
 (1, 'Dupont', 2546),
-(2, 'Eloi', 320),
-(3, 'Arnaud', 630);
+(2, 'deca', 0);
 
 -- --------------------------------------------------------
 
@@ -119,20 +157,22 @@ CREATE TABLE IF NOT EXISTS `membre` (
   `membreLogin` varchar(15) DEFAULT NULL,
   `membreMdp` varchar(15) DEFAULT NULL,
   `membreEmail` varchar(75) DEFAULT NULL,
-  `familleId` smallint(6) DEFAULT NULL,
+  `familleId` int(6) DEFAULT NULL,
   `dateCreation` date DEFAULT NULL,
   `membreNom` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`membreId`),
   KEY `familleId` (`familleId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Contenu de la table `membre`
 --
 
 INSERT INTO `membre` (`membreId`, `membrePrenom`, `membreLogin`, `membreMdp`, `membreEmail`, `familleId`, `dateCreation`, `membreNom`) VALUES
-(1, 'Cyril', 'carnaud', 'ini01', '04arnaud@gmail.com', 1, '2014-04-20', 'Dupont'),
-(2, 'Arnaud', 'aeloi', 'ini01', 'eloi.arnaud.13@gmail.com', 2, '2014-04-18', 'Eloi');
+(1, 'Jean', 'jean', 'ini01', 'jean@gmail.com', 1, '2014-04-20', 'Dupont'),
+(4, 'papa', 'papa', 'passroot', 'root@gmail.com', 2, '2014-05-21', 'deca'),
+(5, 'cyril', 'cysou', 'pass', '04arnaud@gmail.com', 2, '2014-05-21', 'deca'),
+(6, 'nicolas', 'nico', 'passnico', 'nicolas.capiaumont@gmail.com', 2, '2014-05-21', 'deca');
 
 -- --------------------------------------------------------
 
@@ -213,6 +253,17 @@ INSERT INTO `rayon` (`rayonId`, `rayonLib`) VALUES
 --
 
 --
+-- Contraintes pour la table `cheffamille`
+--
+ALTER TABLE `cheffamille`
+  ADD CONSTRAINT `cheffamille_ibfk_6` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
+  ADD CONSTRAINT `cheffamille_ibfk_1` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`),
+  ADD CONSTRAINT `cheffamille_ibfk_2` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`),
+  ADD CONSTRAINT `cheffamille_ibfk_3` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
+  ADD CONSTRAINT `cheffamille_ibfk_4` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
+  ADD CONSTRAINT `cheffamille_ibfk_5` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`);
+
+--
 -- Contraintes pour la table `contenuliste`
 --
 ALTER TABLE `contenuliste`
@@ -224,6 +275,12 @@ ALTER TABLE `contenuliste`
 --
 ALTER TABLE `liste`
   ADD CONSTRAINT `fk_famille` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`);
+
+--
+-- Contraintes pour la table `membre`
+--
+ALTER TABLE `membre`
+  ADD CONSTRAINT `membre_ibfk_1` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`);
 
 --
 -- Contraintes pour la table `organisation`
@@ -238,8 +295,8 @@ ALTER TABLE `organisation`
 ALTER TABLE `produit`
   ADD CONSTRAINT `fk_rayon` FOREIGN KEY (`rayonId`) REFERENCES `rayon` (`rayonId`);
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
---
--- Création de l'utilisateur de la base de données
---
 grant all privileges on listedescourses.* to 'userLDC'@'127.0.0.1' identified by 'passLDC';
