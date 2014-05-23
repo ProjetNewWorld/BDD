@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `liste` (
   `enCours` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`listeId`),
   KEY `produitId` (`familleId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `liste`
