@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le : Mer 21 Mai 2014 à 14:51
+-- Généré le : Ven 23 Mai 2014 à 12:41
 -- Version du serveur: 5.5.20
 -- Version de PHP: 5.3.10
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données: `dblistecourses`
+-- Base de données: `listedescourses`
 --
 
 -- --------------------------------------------------------
@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS `cheffamille` (
 --
 
 INSERT INTO `cheffamille` (`familleId`, `membreId`) VALUES
-(2, 4);
+(2, 4),
+(3, 7);
 
 -- --------------------------------------------------------
 
@@ -67,7 +68,12 @@ INSERT INTO `contenuliste` (`listeId`, `produitId`, `listeQte`, `dansCaddy`) VAL
 (0, 5, 2, 0),
 (0, 6, 9, 0),
 (0, 7, 3, 0),
-(0, 8, 1, 1);
+(0, 8, 1, 1),
+(4, 5, 1, 0),
+(4, 6, 5, 0),
+(4, 7, 3, 0),
+(4, 8, 2, 0),
+(4, 9, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -91,17 +97,17 @@ CREATE TABLE IF NOT EXISTS `demande` (
 CREATE TABLE IF NOT EXISTS `famille` (
   `familleId` int(11) NOT NULL AUTO_INCREMENT,
   `familleLibelle` varchar(25) NOT NULL,
-  `familleCode` int(11) NOT NULL,
   PRIMARY KEY (`familleId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `famille`
 --
 
-INSERT INTO `famille` (`familleId`, `familleLibelle`, `familleCode`) VALUES
-(1, 'Dupont', 2546),
-(2, 'deca', 0);
+INSERT INTO `famille` (`familleId`, `familleLibelle`) VALUES
+(1, 'Dupont'),
+(2, 'deca'),
+(3, 'admin');
 
 -- --------------------------------------------------------
 
@@ -110,19 +116,21 @@ INSERT INTO `famille` (`familleId`, `familleLibelle`, `familleCode`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `liste` (
-  `listeId` int(11) NOT NULL DEFAULT '0',
+  `listeId` int(11) NOT NULL AUTO_INCREMENT,
   `familleId` int(11) NOT NULL,
   `enCours` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`listeId`),
   KEY `produitId` (`familleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `liste`
 --
 
 INSERT INTO `liste` (`listeId`, `familleId`, `enCours`) VALUES
-(0, 1, 1);
+(1, 1, 1),
+(4, 2, 1),
+(5, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -162,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `membre` (
   `membreNom` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`membreId`),
   KEY `familleId` (`familleId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `membre`
@@ -172,7 +180,8 @@ INSERT INTO `membre` (`membreId`, `membrePrenom`, `membreLogin`, `membreMdp`, `m
 (1, 'Jean', 'jean', 'ini01', 'jean@gmail.com', 1, '2014-04-20', 'Dupont'),
 (4, 'papa', 'papa', 'passroot', 'root@gmail.com', 2, '2014-05-21', 'deca'),
 (5, 'cyril', 'cysou', 'pass', '04arnaud@gmail.com', 2, '2014-05-21', 'deca'),
-(6, 'nicolas', 'nico', 'passnico', 'nicolas.capiaumont@gmail.com', 2, '2014-05-21', 'deca');
+(6, 'nicolas', 'nico', 'passnico', 'nicolas.capiaumont@gmail.com', 2, '2014-05-21', 'deca'),
+(7, 'admin', 'admin', 'admin', 'admin@admin.fr', 3, '2014-05-23', 'admin');
 
 -- --------------------------------------------------------
 
@@ -223,7 +232,8 @@ INSERT INTO `produit` (`produitId`, `produitLib`, `rayonId`) VALUES
 (5, 'feuille de chenes blonde', 3),
 (6, 'carote', 3),
 (7, 'Pelle', 7),
-(8, 'Pot en terre', 7);
+(8, 'Pot en terre', 7),
+(9, 'Entrecote', 8);
 
 -- --------------------------------------------------------
 
@@ -243,6 +253,7 @@ CREATE TABLE IF NOT EXISTS `rayon` (
 --
 
 INSERT INTO `rayon` (`rayonId`, `rayonLib`) VALUES
+(8, 'Boucherie'),
 (7, 'Jardinerie'),
 (3, 'Legume'),
 (1, 'viande'),
@@ -256,12 +267,12 @@ INSERT INTO `rayon` (`rayonId`, `rayonLib`) VALUES
 -- Contraintes pour la table `cheffamille`
 --
 ALTER TABLE `cheffamille`
-  ADD CONSTRAINT `cheffamille_ibfk_6` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
   ADD CONSTRAINT `cheffamille_ibfk_1` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`),
   ADD CONSTRAINT `cheffamille_ibfk_2` FOREIGN KEY (`familleId`) REFERENCES `famille` (`familleId`),
   ADD CONSTRAINT `cheffamille_ibfk_3` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
   ADD CONSTRAINT `cheffamille_ibfk_4` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
-  ADD CONSTRAINT `cheffamille_ibfk_5` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`);
+  ADD CONSTRAINT `cheffamille_ibfk_5` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`),
+  ADD CONSTRAINT `cheffamille_ibfk_6` FOREIGN KEY (`membreId`) REFERENCES `membre` (`membreId`);
 
 --
 -- Contraintes pour la table `contenuliste`
@@ -298,5 +309,3 @@ ALTER TABLE `produit`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-grant all privileges on listedescourses.* to 'userLDC'@'127.0.0.1' identified by 'passLDC';
