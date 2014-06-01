@@ -2,6 +2,7 @@ listedescourses v1.0
 ===============
 
 Base de données pour les applications du projet New World 
+
 1. Application Web
 2. Application Android
 3. BackOffice
@@ -10,7 +11,7 @@ Base de données pour les applications du projet New World
 Les tables
 ========
 Vue globale
---------------------
+-----------
 ``mysql> show tables;``
 
 | Tables_in_listedescourses |
