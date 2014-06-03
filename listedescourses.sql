@@ -6,10 +6,10 @@
 --   AppliAndroid
 --   BackOffice
 -- Création collaborative :
+--   Arnaud Eloi
 --   Nicolas Capiaumont
 --   Cyril Arnaud
 --   Kevin Da Rocha
---   Arnaud Eloi
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
@@ -62,7 +62,8 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS liste (
   listeId INT(11) AUTO_INCREMENT PRIMARY KEY,
   familleId INT(11) NOT NULL ,
-  enCours TINYINT(1) NULL DEFAULT '1' )
+  enCours TINYINT(1) NULL DEFAULT '1',
+  next TINYINT(1) NULL DEFAULT '0')
 ENGINE = InnoDB;
 
 
